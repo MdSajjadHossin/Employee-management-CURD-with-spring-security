@@ -1,6 +1,5 @@
 package com.shossin.springboot.cruddemo.rest;
 
-import com.shossin.springboot.cruddemo.dao.EmployeeDAO;
 import com.shossin.springboot.cruddemo.entity.Employee;
 import com.shossin.springboot.cruddemo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +59,20 @@ public class EmployeeRestController {
         Employee dbEmployee = employeeService.save(theEmployee);
 
         return dbEmployee;
+    }
+
+    // add mappting for DELETE /employees/{employeeId} - delete employee
+    @DeleteMapping("/employees/{employeeId}")
+    public String deleteEmployee(@PathVariable int employeeId){
+
+        Employee tempEmployee = employeeService.findById(employeeId);
+
+        //throw exception if null
+
+        if(tempEmployee == null){
+            throw new RuntimeException("Employee id not found - " + employeeId);
+        }
+        employeeService.deleteById(employeeId);
+        return "Deleted employee id - " + employeeId;
     }
 }
